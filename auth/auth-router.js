@@ -28,7 +28,7 @@ router.post('/login', (req, res) => {
   console.log()
   let {username, password} = req.body;
   console.log(username, password)
-  Users.findBy(req.body.username)
+  Users.findBy({username})
   
   .first()
   .then(user => {
@@ -58,7 +58,7 @@ function generateToken(user){
     subject: user.id,
   };
   const options = {
-    expiresIn: '27d'
+    expiresIn: '2d'
   }
 
   return jwt.sign(payload, secrets.jwtSecret, options);
