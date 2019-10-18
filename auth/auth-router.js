@@ -8,7 +8,7 @@ const secrets = require('../config/secrets');
 router.post('/register', (req, res) => {
   // implement registration
   let user = req.body;
-  const hash = bcrypt.hashSync(user.password, 27);
+  const hash = bcrypt.hashSync(user.password, 8);
   user.password = hash;
 
   Users.add(user)
@@ -19,6 +19,7 @@ router.post('/register', (req, res) => {
     res.status(500).json({
       message: 'Sorry you cannot be added because you arent cool enough.', err
     });
+    console.log(err)
   });
 });
 
@@ -29,9 +30,11 @@ router.post('/login', (req, res) => {
   Users.findBy({username})
   .first()
   .then(user => {
+    console.log(hi)
     if (user && bcrypt.compareSync(password, user.password)){
+      console.log(hello)
       const token = generateToken(user);
-
+      console.log(hi)
       res.status(200).json({
         message: `Welcome ${user.username}!`
       });
@@ -52,6 +55,9 @@ function generateToken(user){
     username: user.username,
     subject: user.id,
   };
+  const options = {
+    expiresIn: '27d'
+  }
 
   return jwt.sign(payload, secrets.jwtSecret, options);
 }
