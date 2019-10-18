@@ -28,8 +28,8 @@ router.post('/login', (req, res) => {
   console.log()
   let {username, password} = req.body;
   console.log(username, password)
-  Users.findBy({username })
-  console.log(username)
+  Users.findBy(req.body.username)
+  
   .first()
   .then(user => {
     
